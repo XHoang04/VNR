@@ -4,6 +4,13 @@ import Link from "next/link";
 import ChatBox from "./components/ChatBox";
 import Navbar from "./components/Navbar";
 
+const NAV_LINKS = [
+  { href: "/", label: "🏠 Trang Chủ" },
+  { href: "/noi-dung", label: "📖 Nội Dung" },
+  { href: "/tro-choi", label: "🎮 Trò Chơi" },
+  { href: "/hoi-dap", label: "❓ Hỏi Đáp" },
+];
+
 const EVENTS = [
   {
     year: "1986",
