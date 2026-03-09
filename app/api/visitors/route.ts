@@ -17,33 +17,42 @@ async function redis(command: unknown[]) {
   return data.result;
 }
 
+// POST: cập nhật heartbeat cho 1 user (sessionId)
+// Mỗi user lưu 1 key riêng, TTL = 60 giây
+// Sau 60 giây không heartbeat → key tự xóa → không tính là online nữa
 export async function POST(req: Request) {
   try {
     const { sessionId } = await req.json();
-    if (!sessionId) return NextResponse.json({ online: 1 });
+    if (!sessionId) return NextResponse.json({ online: 0 });
 
     if (!UPSTASH_URL || !UPSTASH_TOKEN) {
       return NextResponse.json({ online: 1 });
     }
 
-    // Lưu key riêng mỗi người, TTL 60 giây
-    await redis(["SET", `online:${sessionId}`, "1", "EX", "60"]);
+    const key = `online:${sessionId}`;
 
-    // Đếm tất cả key online:*
+    // SET key = 1, tự hết hạn sau 60 giây
+    await redis(["SET", key, "1", "EX", "60"]);
+
+    // Đếm tất cả key đang tồn tại có prefix "online:"
     const keys: string[] = await redis(["KEYS", "online:*"]);
-    return NextResponse.json({ online: keys ? keys.length : 1 });
+    const online = keys ? keys.length : 1;
+
+    return NextResponse.json({ online });
   } catch {
     return NextResponse.json({ online: 1 });
   }
 }
 
+// GET: chỉ lấy số người online hiện tại
 export async function GET() {
   try {
     if (!UPSTASH_URL || !UPSTASH_TOKEN) {
       return NextResponse.json({ online: 1 });
     }
     const keys: string[] = await redis(["KEYS", "online:*"]);
-    return NextResponse.json({ online: keys ? keys.length : 0 });
+    const online = keys ? keys.length : 0;
+    return NextResponse.json({ online });
   } catch {
     return NextResponse.json({ online: 0 });
   }
