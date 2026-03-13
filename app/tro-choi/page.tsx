@@ -47,12 +47,16 @@ export default function TroChoiPage() {
     <div style={{ minHeight: "100vh", background: "#FDF6E3" }}>
       <Navbar />
 
-      <div style={{ background: "linear-gradient(135deg, #6B1410, #B5261E)", padding: "56px 0 48px" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+      <div style={{ position: "relative", overflow: "hidden", minHeight: 220, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(107,20,16,0.88), rgba(181,38,30,0.82))" }} />
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "56px 24px 48px" }}>
           <h1 style={{ ...S, fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.8rem)", color: "white", lineHeight: 1.2 }}>
             Trò Chơi Lịch Sử
           </h1>
-          <p style={{ ...S, color: "rgba(255,255,255,0.7)", fontSize: "1rem", marginTop: 10 }}>
+          <p style={{ ...S, color: "rgba(255,255,255,0.75)", fontSize: "1rem", marginTop: 10 }}>
             Học mà chơi, chơi mà học — kiểm tra kiến thức về Đổi Mới 1986–1991
           </p>
         </div>
