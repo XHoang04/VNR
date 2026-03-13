@@ -98,7 +98,6 @@ const MILESTONES = [
     year: "1986",
     title: "Đại hội Đảng lần VI",
     sub: "Khởi xướng Đổi Mới",
-    image: "/pictures/pic1.png",
     desc: "Tháng 12/1986, Đại hội VI chính thức mở ra công cuộc đổi mới toàn diện với tinh thần nhìn thẳng vào sự thật, đánh giá đúng thực trạng đất nước.",
     accent: "#B5261E",
   },
@@ -106,7 +105,6 @@ const MILESTONES = [
     year: "1987",
     title: "Luật Đầu tư nước ngoài",
     sub: "Mở cửa kinh tế",
-    image: "/pictures/pic2.png",
     desc: "Luật Đầu tư nước ngoài đầu tiên được ban hành, tạo nền tảng pháp lý thu hút vốn FDI, công nghệ và kỹ năng quản lý hiện đại.",
     accent: "#D4982A",
   },
@@ -114,7 +112,6 @@ const MILESTONES = [
     year: "1988",
     title: "Khoán 10",
     sub: "Giải phóng nông nghiệp",
-    image: "/pictures/pic3.png",
     desc: "Nghị quyết 10 giao quyền sử dụng đất lâu dài cho hộ nông dân. Việt Nam chuyển từ thiếu lương thực sang xuất khẩu gạo trong vòng một năm.",
     accent: "#1B5E35",
   },
@@ -122,7 +119,6 @@ const MILESTONES = [
     year: "1989",
     title: "Rút quân khỏi Campuchia",
     sub: "Bình thường hóa quan hệ",
-    image: "/pictures/pic4.jpg",
     desc: "Hoàn thành rút toàn bộ quân tình nguyện, mở đường bình thường hóa quan hệ với ASEAN, phương Tây và Trung Quốc.",
     accent: "#132D52",
   },
@@ -130,7 +126,6 @@ const MILESTONES = [
     year: "1991",
     title: "Đại hội Đảng lần VII",
     sub: "Hoàn thiện đường lối",
-    image: "/pictures/pic5.png",
     desc: "Đại hội VII thông qua Cương lĩnh xây dựng đất nước — văn kiện nền tảng định hướng con đường phát triển lâu dài của dân tộc.",
     accent: "#B5261E",
   },
@@ -327,8 +322,15 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════ DÒNG THỜI GIAN ═══ */}
-      <section style={{ padding: "96px 0", background: "#F8F1E0" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
+      <section style={{ padding: "96px 0", background: "#F8F1E0", position: "relative", overflow: "hidden" }}>
+        {/* Floating background shapes */}
+        <div style={{ position:"absolute", inset:0, pointerEvents:"none", zIndex:0 }}>
+          <div style={{ position:"absolute", top:"8%", left:"3%", width:320, height:320, borderRadius:"50%", background:"#B5261E", animation:"floatShape 9s ease-in-out infinite", opacity:0.05 }} />
+          <div style={{ position:"absolute", top:"40%", right:"2%", width:220, height:220, borderRadius:"50%", background:"#D4982A", animation:"floatShape2 12s ease-in-out infinite", opacity:0.04 }} />
+          <div style={{ position:"absolute", bottom:"10%", left:"20%", width:180, height:180, borderRadius:"50%", background:"#B5261E", animation:"floatShape 14s ease-in-out infinite 3s", opacity:0.035 }} />
+          <div style={{ position:"absolute", top:"65%", right:"25%", width:260, height:260, borderRadius:"50%", background:"#D4982A", animation:"floatShape2 10s ease-in-out infinite 1.5s", opacity:0.04 }} />
+        </div>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px", position: "relative", zIndex: 1 }}>
 
           {/* Tiêu đề */}
           <div style={{ textAlign: "center", marginBottom: 72 }}>
@@ -425,20 +427,6 @@ export default function Home() {
                       boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
                       width: "100%",
                     }}>
-                      {m.image && (
-                        <img
-                          src={m.image}
-                          alt={`${m.title} ${m.year}`}
-                          style={{
-                            width: "100%",
-                            height: "clamp(140px, 30vh, 320px)",
-                            objectFit: "cover",
-                            borderRadius: 8,
-                            marginBottom: 14,
-                            display: "block",
-                          }}
-                        />
-                      )}
                       <div style={{
                         fontWeight: 900, fontSize: "3rem",
                         color: m.accent, opacity: 0.12,
