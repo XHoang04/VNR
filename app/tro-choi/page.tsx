@@ -1,7 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import ChatBox from "../components/ChatBox";
+
+function HeaderBackground() {
+  const [videoFailed, setVideoFailed] = useState(false);
+  useEffect(() => {
+    
+  }, []);
+
+  if (!videoFailed) {
+    return (
+      <video autoPlay muted loop playsInline
+        onError={() => setVideoFailed(true)}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
+      >
+        <source src="/hero.mp4" type="video/mp4" onError={() => setVideoFailed(true)} />
+      </video>
+    );
+  }
+
+  return <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(135deg, #0F4A1F, #1E6B38)" }} />;
+}
 
 const QUIZ = [
   { q: "Đại hội Đảng lần thứ VI diễn ra vào tháng nào, năm nào?", opts: ["Tháng 12/1985","Tháng 12/1986","Tháng 6/1987","Tháng 3/1986"], ans: 1, exp: "Đại hội VI diễn ra từ ngày 15 đến 18 tháng 12 năm 1986 tại Hà Nội, chính thức khởi xướng đường lối Đổi Mới." },
@@ -47,8 +67,12 @@ export default function TroChoiPage() {
     <div style={{ minHeight: "100vh", background: "#FDF6E3" }}>
       <Navbar />
 
-      <div style={{ background: "linear-gradient(135deg, #0F4A1F, #1E6B38)", padding: "56px 0 48px" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+      <div style={{ position: "relative", padding: "56px 0 48px", overflow: "hidden" }}>
+        <HeaderBackground />
+
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(15,74,31,0.85), rgba(30,107,56,0.75))" }} />
+
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 700, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <h1 style={{ ...S, fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.8rem)", color: "white", lineHeight: 1.2 }}>
             Trò Chơi Lịch Sử
           </h1>
