@@ -58,6 +58,14 @@ export default function Navbar() {
           <VisitorCounter />
         </div>
 
+        {/* Shimmer line at bottom */}
+        <div style={{
+          height: 2,
+          background: "linear-gradient(90deg, transparent 0%, rgba(212,152,42,0.6) 30%, rgba(240,188,74,0.9) 50%, rgba(212,152,42,0.6) 70%, transparent 100%)",
+          backgroundSize: "200% 100%",
+          animation: "navShimmer 4s linear infinite",
+        }} />
+
         {/* Mobile row */}
         <div className="nav-mobile" style={{
           gap: 6, padding: "0 16px 10px", overflowX: "auto",
