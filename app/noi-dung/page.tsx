@@ -1,557 +1,242 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import Navbar from "./components/Navbar";
-import ChatBox from "./components/ChatBox";
+import { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import ChatBox from "../components/ChatBox";
 
-function ThreeBackground() {
-  const mountRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    let animId: number;
-    const el = mountRef.current;
-    if (!el) return;
-    const THREE = (window as any).THREE;
-    if (!THREE) return;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, el.clientWidth / el.clientHeight, 0.1, 1000);
-    camera.position.z = 5;
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(el.clientWidth, el.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    el.appendChild(renderer.domElement);
-    const count = 2000;
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(count * 3);
-    const col = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i*3]   = (Math.random()-0.5)*22;
-      pos[i*3+1] = (Math.random()-0.5)*22;
-      pos[i*3+2] = (Math.random()-0.5)*14;
-      const t = Math.random();
-      col[i*3]   = 0.78 + t*0.22;
-      col[i*3+1] = t*0.62;
-      col[i*3+2] = 0.04;
-    }
-    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute("color",    new THREE.BufferAttribute(col, 3));
-    const mat = new THREE.PointsMaterial({ size: 0.06, vertexColors: true, transparent: true, opacity: 0.88, sizeAttenuation: true });
-    const points = new THREE.Points(geo, mat);
-    scene.add(points);
-    const onResize = () => {
-      camera.aspect = el.clientWidth / el.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(el.clientWidth, el.clientHeight);
-    };
-    window.addEventListener("resize", onResize);
-    let t = 0;
-    const animate = () => {
-      t += 0.0005;
-      points.rotation.y = t * 0.35;
-      points.rotation.x = Math.sin(t*0.7) * 0.12;
-      renderer.render(scene, camera);
-      animId = requestAnimationFrame(animate);
-    };
-    animate();
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", onResize);
-      renderer.dispose();
-      if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
-    };
-  }, []);
-  return (
-    <div ref={mountRef} style={{
-      position:"absolute", inset:0, zIndex:0,
-      background:"linear-gradient(160deg,#3D0A07 0%,#6B1410 45%,#1A0504 100%)",
-    }}/>
-  );
-}
-
-function HeroBackground() {
+function HeaderBackground() {
   const [videoFailed, setVideoFailed] = useState(false);
-  const [threeReady, setThreeReady]   = useState(false);
   useEffect(() => {
-    if ((window as any).THREE) { setThreeReady(true); return; }
-    const s = document.createElement("script");
-    s.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
-    s.onload = () => setThreeReady(true);
-    document.head.appendChild(s);
+    // Optionally load Three.js here for a 3D fallback like the home page.
   }, []);
 
   if (!videoFailed) {
     return (
       <video autoPlay muted loop playsInline
         onError={() => setVideoFailed(true)}
-        style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", zIndex:0 }}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
       >
         <source src="/hero.mp4" type="video/mp4" onError={() => setVideoFailed(true)} />
       </video>
     );
   }
-  if (threeReady) return <ThreeBackground />;
-  return <div style={{ position:"absolute", inset:0, zIndex:0, background:"linear-gradient(160deg,#3D0A07,#6B1410,#1A0504)" }}/>;
+
+  // Fallback: gradient background
+  return <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(135deg, #7B1A12, #A93226, #C0392B)" }} />;
 }
 
-
-const MILESTONES = [
+const SECTIONS = [
   {
-    year: "1986",
-    title: "Đại hội Đảng lần VI",
-    sub: "Khởi xướng Đổi Mới",
+    id: "boi-canh", color: "#1A4A7A",
+    title: "Bối Cảnh Lịch Sử Trước Đổi Mới",
+    content: `Trước năm 1986, Việt Nam lâm vào khủng hoảng kinh tế – xã hội nghiêm trọng. Nền kinh tế kế hoạch hóa tập trung, bao cấp bộc lộ nhiều yếu kém căn bản: sản xuất đình đốn, hàng hóa khan hiếm, lạm phát phi mã lên tới hàng trăm phần trăm mỗi năm. Đời sống nhân dân hết sức khó khăn, thiếu thốn.
+
+Trên thế giới, làn sóng cải cách đang lan rộng. Liên Xô bắt đầu chính sách Glasnost và Perestroika từ 1985. Trung Quốc đã tiến hành cải cách kinh tế từ năm 1978 và gặt hái kết quả đáng kể.
+
+Trong nước, nhiều địa phương và cơ sở đã tự phát "phá rào" trong sản xuất và phân phối để đáp ứng nhu cầu thực tế. Những thực tiễn sáng tạo này tạo cơ sở thực tiễn cho Đảng tổng kết và đề ra đường lối Đổi Mới.`,
+    image: "/pictures/pic6.png",
+    caption: "Phố phường Hà Nội những năm 1980 — thời kỳ kinh tế bao cấp khó khăn",
+    source: "https://giaoduc.net.vn/hinh-anh-dac-sac-ve-cuoc-song-nguoi-ha-noi-thoi-ky-bao-cap-p1-post38454.gd"
+  },
+  {
+    id: "dai-hoi-vi", color: "#A93226",
+    title: "Đại Hội Đảng Lần VI (12/1986) — Khởi Xướng Đổi Mới",
+    content: `Tháng 12/1986, Đại hội đại biểu toàn quốc lần thứ VI của Đảng Cộng sản Việt Nam được tổ chức tại Hà Nội. Đây là đại hội lịch sử, đánh dấu bước ngoặt căn bản trong sự nghiệp cách mạng Việt Nam.
+
+Đại hội VI đề ra đường lối Đổi Mới với ba nội dung cốt lõi:
+— Đổi mới tư duy, nhất là tư duy kinh tế: từ bỏ tư duy chủ quan, duy ý chí, nhìn thẳng vào sự thật
+— Xây dựng nền kinh tế hàng hóa nhiều thành phần, vận hành theo cơ chế thị trường có quản lý của Nhà nước
+— Mở cửa hội nhập quốc tế
+
+Đại hội nhấn mạnh nguyên tắc "nhìn thẳng vào sự thật, đánh giá đúng sự thật, nói rõ sự thật" — một tinh thần dân chủ trong sinh hoạt Đảng. Nghị quyết Đại hội VI xác định ba chương trình kinh tế lớn: lương thực – thực phẩm, hàng tiêu dùng, hàng xuất khẩu.`,
     image: "/pictures/pic1.png",
-    desc: "Tháng 12/1986, Đại hội VI chính thức mở ra công cuộc đổi mới toàn diện với tinh thần nhìn thẳng vào sự thật, đánh giá đúng thực trạng đất nước.",
-    accent: "#B5261E",
+    caption: "Hội trường lịch sử — nơi diễn ra Đại hội Đảng lần VI, tháng 12/1986 tại Hà Nội",
+    source: "https://www.qdnd.vn/chinh-tri/tin-tuc/cac-ky-dai-hoi-cua-dang-va-nhung-dau-an-lich-su-dai-hoi-lan-thu-vi-khoi-xuong-va-lanh-dao-su-nghiep-doi-moi-dat-nuoc-813798"
   },
   {
-    year: "1987",
-    title: "Luật Đầu tư nước ngoài",
-    sub: "Mở cửa kinh tế",
-    image: "/pictures/pic2.png",
-    desc: "Luật Đầu tư nước ngoài đầu tiên được ban hành, tạo nền tảng pháp lý thu hút vốn FDI, công nghệ và kỹ năng quản lý hiện đại.",
-    accent: "#D4982A",
+    id: "kinh-te", color: "#1E6B38",
+    title: "Đổi Mới Kinh Tế — Từ Bao Cấp Đến Thị Trường",
+    content: `Sau Đại hội VI, các chính sách kinh tế đổi mới được triển khai mạnh mẽ trên nhiều lĩnh vực.
+
+Khoán 10 (1988): Nghị quyết 10 của Bộ Chính trị (tháng 4/1988) giao quyền sử dụng đất lâu dài cho hộ nông dân, thay thế mô hình hợp tác xã bao cấp. Kết quả: sản lượng lúa tăng vọt, Việt Nam từ nước thiếu lương thực trở thành nước xuất khẩu gạo đứng thứ ba thế giới vào năm 1989.
+
+Luật Đầu tư nước ngoài (1987): Quốc hội ban hành Luật Đầu tư nước ngoài đầu tiên, mở cửa thu hút vốn FDI, công nghệ và kỹ năng quản lý.
+
+Xóa bỏ bao cấp (1989): Nghị quyết 306/HĐBT xóa bỏ cơ chế hai giá, thống nhất hệ thống giá cả theo thị trường. Cải cách hệ thống ngân hàng, tách ngân hàng trung ương khỏi ngân hàng thương mại.
+
+Phát triển kinh tế tư nhân: Thừa nhận và khuyến khích kinh tế tư nhân, kinh tế hỗn hợp phát triển song song với kinh tế nhà nước.`,
+    image: "/pictures/pic7.png",
+    caption: "Thực hiện khoán gọn theo đơn giá vụ mùa năm 1988, HTX Nhân Khang, huyện Lý Nhân, tỉnh Hà Nam — thành quả của chính sách Khoán 10",
+    source: "https://www.vietnamplus.vn/tu-bai-hoc-khoan-10-den-cuong-quoc-xuat-khau-gao-post619310.vnp"
   },
   {
-    year: "1988",
-    title: "Khoán 10",
-    sub: "Giải phóng nông nghiệp",
-    image: "/pictures/pic3.png",
-    desc: "Nghị quyết 10 giao quyền sử dụng đất lâu dài cho hộ nông dân. Việt Nam chuyển từ thiếu lương thực sang xuất khẩu gạo trong vòng một năm.",
-    accent: "#1B5E35",
+    id: "doi-ngoai", color: "#5B2C6F",
+    title: "Đổi Mới Đối Ngoại — Hội Nhập Quốc Tế",
+    content: `Cùng với đổi mới kinh tế, Đảng chủ trương đổi mới toàn diện đường lối đối ngoại theo hướng mở cửa, đa phương hóa, đa dạng hóa.
+
+Rút quân khỏi Campuchia (1989): Tháng 9/1989, Việt Nam hoàn thành việc rút toàn bộ 50.000 quân tình nguyện khỏi Campuchia. Đây là điều kiện tiên quyết để bình thường hóa quan hệ với các nước ASEAN và phương Tây.
+
+Bình thường hóa quan hệ: Việt Nam từng bước cải thiện quan hệ với Trung Quốc, các nước ASEAN và bắt đầu quá trình bình thường hóa với Hoa Kỳ.
+
+Chính sách đối ngoại mới: Đường lối "Việt Nam muốn làm bạn với tất cả các nước" được chính thức hóa tại Đại hội VII (1991). Việt Nam xin gia nhập ASEAN (chính thức kết nạp năm 1995).
+
+Bối cảnh quốc tế: Sự sụp đổ của bức tường Berlin (11/1989) và hệ thống xã hội chủ nghĩa Đông Âu buộc Đảng phải suy nghĩ sâu sắc hơn về con đường phát triển.`,
+    image: "/pictures/pic8.jpg",
+    caption: "Quân đội nhân dân Việt Nam — hoàn thành nghĩa vụ quốc tế ở Campuchia (1989)",
+    source: "https://tienphong.vn/bo-doi-nha-phat-va-tinh-than-quoc-te-cao-ca-post1139380.tpo"
   },
   {
-    year: "1989",
-    title: "Rút quân khỏi Campuchia",
-    sub: "Bình thường hóa quan hệ",
-    image: "/pictures/pic4.jpg",
-    desc: "Hoàn thành rút toàn bộ quân tình nguyện, mở đường bình thường hóa quan hệ với ASEAN, phương Tây và Trung Quốc.",
-    accent: "#132D52",
-  },
-  {
-    year: "1991",
-    title: "Đại hội Đảng lần VII",
-    sub: "Hoàn thiện đường lối",
+    id: "dai-hoi-vii", color: "#A93226",
+    title: "Đại Hội VII (6/1991) — Hoàn Thiện Đường Lối",
+    content: `Tháng 6/1991, Đại hội đại biểu toàn quốc lần thứ VII diễn ra trong bối cảnh đặc biệt: Liên Xô và Đông Âu đang sụp đổ, nhưng Việt Nam đã có 5 năm đổi mới với những kết quả ban đầu đáng khích lệ.
+
+Cương lĩnh xây dựng đất nước: Đại hội VII thông qua Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội (Cương lĩnh 1991) — văn kiện nền tảng xác định con đường đi lên của Việt Nam.
+
+Chiến lược đến năm 2000: Đại hội thông qua Chiến lược phát triển kinh tế – xã hội đến năm 2000, đặt mục tiêu thoát khỏi nghèo nàn và lạc hậu.
+
+Tiếp tục đổi mới: Khẳng định tiếp tục đường lối đổi mới, không dao động, không quay lại cơ chế cũ. Nhấn mạnh đổi mới đồng bộ cả kinh tế lẫn hệ thống chính trị.
+
+Đại hội VII đánh dấu sự hoàn thiện bước đầu của đường lối Đổi Mới, tạo nền tảng vững chắc cho công cuộc xây dựng và phát triển đất nước trong giai đoạn tiếp theo.`,
     image: "/pictures/pic5.png",
-    desc: "Đại hội VII thông qua Cương lĩnh xây dựng đất nước — văn kiện nền tảng định hướng con đường phát triển lâu dài của dân tộc.",
-    accent: "#B5261E",
-  },
+    caption: "Hà Nội — biểu tượng của thể chế chính trị Việt Nam giai đoạn Đổi Mới",
+    source: "https://baoninhbinh.org.vn/dai-hoi-dang-lan-thu-vii-tiep-tuc-cong-cuoc-doi-moi-dua-dat-nuoc-co-ban-thoat-k-251110095239061.html"
+  }
 ];
 
-const STATS = [
-  { num: "1,4 triệu tấn", label: "Gạo xuất khẩu mỗi năm", note: "Từ thiếu đói đến xuất khẩu (1989)" },
-  { num: "~6%",           label: "Tăng trưởng GDP bình quân", note: "Giai đoạn 1987–1991" },
-  { num: "200+",          label: "Dự án FDI được cấp phép", note: "Sau Luật Đầu tư nước ngoài 1987" },
-  { num: "5 năm",         label: "Từ khủng hoảng đến ổn định", note: "Thành quả giai đoạn Đổi Mới đầu tiên" },
-];
-
-const NAV_LINKS = [
-  { href: "/",         label: "Trang Chủ" },
-  { href: "/noi-dung", label: "Nội Dung"  },
-  { href: "/tro-choi", label: "Trò Chơi"  },
-  { href: "/hoi-dap",  label: "Hỏi Đáp"   },
-];
-
-export default function Home() {
+export default function NoiDungPage() {
   const [chat, setChat] = useState(false);
 
   return (
-    <div style={{ fontFamily: "'Be Vietnam Pro', sans-serif", background: "#F8F1E0" }}>
+    <div style={{ minHeight: "100vh", background: "#FDF6E3" }}>
       <Navbar />
 
-      {/* ═══════════════════════════════════════ HERO FULLSCREEN ═══ */}
-      <section style={{
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-        minHeight: 600,
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}>
-        {/* Video nền hoặc 3D particles */}
-        <HeroBackground />
+      {/* Header */}
+      <div style={{ position: "relative", padding: "56px 0 48px", overflow: "hidden" }}>
+        <HeaderBackground />
 
-        {/* Gradient overlay */}
-        <div style={{
-          position: "absolute", inset: 0, zIndex: 1,
-          background: `
-            linear-gradient(
-              160deg,
-              rgba(90,12,8,0.88) 0%,
-              rgba(140,30,22,0.78) 40%,
-              rgba(30,8,4,0.72) 100%
-            )
-          `,
-        }} />
+        {/* Gradient overlay on top of video to keep text readable */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(123,26,18,0.85), rgba(169,50,38,0.75), rgba(192,57,43,0.78))" }} />
 
-        {/* Họa tiết lưới mờ */}
-        <div style={{
-          position: "absolute", inset: 0, zIndex: 1, opacity: 0.04,
-          backgroundImage: "linear-gradient(rgba(212,152,42,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(212,152,42,0.8) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }} />
-
-        {/* Nội dung hero */}
-        <div style={{
-          position: "relative", zIndex: 2,
-          textAlign: "center", padding: "0 24px",
-          maxWidth: 860,
-        }}>
-          {/* Nhãn trên */}
-          <p className="anim-up" style={{
-            fontWeight: 500, fontSize: "0.78rem",
-            color: "rgba(240,188,74,0.85)",
-            letterSpacing: "0.3em", textTransform: "uppercase",
-            marginBottom: 24,
-          }}>
-            Lịch Sử Đảng Cộng Sản Việt Nam
-          </p>
-
-          {/* Tiêu đề lớn */}
-          <h1 className="anim-up-2" style={{
-            fontWeight: 900,
-            fontSize: "clamp(3rem, 9vw, 7rem)",
-            lineHeight: 1.02,
-            color: "#FFFFFF",
-            letterSpacing: "-0.02em",
-            textShadow: "0 6px 40px rgba(0,0,0,0.5)",
-            marginBottom: 10,
-          }}>
-            Thời Kỳ
-          </h1>
-          <h1 className="anim-up-2" style={{
-            fontWeight: 900,
-            fontSize: "clamp(3rem, 9vw, 7rem)",
-            lineHeight: 1.02,
-            color: "#F0BC4A",
-            letterSpacing: "-0.02em",
-            textShadow: "0 6px 40px rgba(0,0,0,0.4)",
-            marginBottom: 28,
-          }}>
-            Đổi Mới
-          </h1>
-
-          {/* Năm */}
-          <p className="anim-up-3" style={{
-            fontWeight: 300,
-            fontSize: "clamp(1.2rem, 3vw, 1.8rem)",
-            color: "rgba(255,255,255,0.65)",
-            letterSpacing: "0.3em",
-            marginBottom: 20,
-          }}>
-            1986 — 1991
-          </p>
-
-          {/* Đường kẻ vàng */}
-          <div className="anim-up-3" style={{
-            width: 60, height: 2, background: "#D4982A",
-            margin: "0 auto 24px", borderRadius: 1,
-          }} />
-
-          {/* Mô tả */}
-          <p className="anim-up-3" style={{
-            fontWeight: 400,
-            fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
-            color: "rgba(255,255,255,0.72)",
-            lineHeight: 1.85, maxWidth: 560, margin: "0 auto 44px",
-          }}>
-            Giai đoạn bản lề trong lịch sử dân tộc — Đảng khởi xướng công cuộc
-            đổi mới toàn diện, đưa đất nước thoát khỏi khủng hoảng, hội nhập thế giới.
-          </p>
-
-          {/* Nút CTA */}
-          <div className="anim-up-4" style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/noi-dung" style={{
-              fontWeight: 700, fontSize: "0.95rem",
-              background: "#D4982A", color: "#4A0E08",
-              padding: "15px 36px", borderRadius: 4,
-              textDecoration: "none",
-              boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
-              letterSpacing: "0.02em",
-            }}>
-              Khám Phá Nội Dung
-            </Link>
-            <Link href="/tro-choi" style={{
-              fontWeight: 600, fontSize: "0.95rem",
-              background: "transparent", color: "white",
-              padding: "15px 36px", borderRadius: 4,
-              textDecoration: "none",
-              border: "1.5px solid rgba(255,255,255,0.35)",
-              backdropFilter: "blur(8px)",
-              letterSpacing: "0.02em",
-            }}>
-              Trò Chơi Lịch Sử
-            </Link>
-          </div>
-        </div>
-
-        {/* Mũi tên cuộn xuống */}
-        <div style={{
-          position: "absolute", bottom: 32, left: "50%",
-          transform: "translateX(-50%)", zIndex: 2, textAlign: "center",
-          animation: "bounce-down 2.2s ease-in-out infinite",
-        }}>
-          <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", marginBottom: 6 }}>
-            CUỘN XUỐNG
-          </p>
-          <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}>↓</div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════ THỐNG KÊ ═══ */}
-      <section style={{ background: "#7A1710", padding: "64px 0" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 800, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-            gap: 2,
+            display: "inline-block",
+            fontFamily: "'Be Vietnam Pro', sans-serif",
+            fontWeight: 600, fontSize: "0.72rem",
+            color: "#F5C842", letterSpacing: "0.2em",
+            textTransform: "uppercase", marginBottom: 14,
+            borderBottom: "1px solid rgba(245,200,66,0.4)", paddingBottom: 6,
           }}>
-            {STATS.map((s, i) => (
-              <div key={i} style={{
-                textAlign: "center", padding: "32px 24px",
-                borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.1)" : "none",
-              }}>
-                <div style={{ fontWeight: 900, fontSize: "2.2rem", color: "#F0BC4A", lineHeight: 1.1, marginBottom: 8 }}>
-                  {s.num}
-                </div>
-                <div style={{ fontWeight: 700, fontSize: "0.88rem", color: "#F8F1E0", marginBottom: 5 }}>
-                  {s.label}
-                </div>
-                <div style={{ fontWeight: 400, fontSize: "0.75rem", color: "rgba(248,241,224,0.5)" }}>
-                  {s.note}
-                </div>
-              </div>
-            ))}
+            Giáo Trình Chính Thức
           </div>
+          <h1 style={{
+            fontFamily: "'Be Vietnam Pro', sans-serif",
+            fontWeight: 900, fontSize: "clamp(1.8rem, 5vw, 2.8rem)",
+            color: "white", lineHeight: 1.2,
+          }}>Nội Dung Học Thuật</h1>
+          <p style={{
+            fontFamily: "'Be Vietnam Pro', sans-serif",
+            color: "rgba(255,255,255,0.7)", fontSize: "1rem", marginTop: 10,
+          }}>
+            Lịch sử Đảng Cộng sản Việt Nam giai đoạn Đổi Mới 1986–1991
+          </p>
         </div>
-      </section>
+      </div>
 
-      {/* ═══════════════════════════════════════ DÒNG THỜI GIAN ═══ */}
-      <section style={{ padding: "96px 0", background: "#F8F1E0" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
-
-          {/* Tiêu đề */}
-          <div style={{ textAlign: "center", marginBottom: 72 }}>
-            <p style={{
-              fontWeight: 600, fontSize: "0.72rem",
-              color: "#B5261E", letterSpacing: "0.25em",
-              textTransform: "uppercase", marginBottom: 14,
-            }}>Hành Trình Lịch Sử</p>
-            <h2 style={{
-              fontWeight: 800,
-              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
-              color: "#1C1008", lineHeight: 1.15,
+      {/* Quick nav */}
+      <div style={{
+        background: "white", borderBottom: "2px solid #e8d5a3",
+        padding: "12px 0", position: "sticky", top: 64, zIndex: 40,
+      }}>
+        <div style={{
+          maxWidth: 1000, margin: "0 auto", padding: "0 24px",
+          display: "flex", gap: 10, overflowX: "auto",
+        }}>
+          {SECTIONS.map(s => (
+            <button key={s.id} onClick={() => {
+              document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }} style={{
+              whiteSpace: "nowrap", padding: "6px 14px",
+              borderRadius: 20, border: `1.5px solid ${s.color}30`,
+              background: s.color + "12", color: s.color,
+              fontFamily: "'Be Vietnam Pro', sans-serif",
+              fontWeight: 600, fontSize: "0.8rem", cursor: "pointer",
             }}>
-              Dòng Thời Gian Đổi Mới
-            </h2>
-            <div style={{
-              width: 48, height: 3, background: "#D4982A",
-              margin: "20px auto 0", borderRadius: 2,
-            }} />
-          </div>
+              {s.title.split("—")[0].replace(/^\d+\.\s/, "").trim()}
+            </button>
+          ))}
+        </div>
+      </div>
 
-          {/* Timeline */}
-          <div style={{ position: "relative" }}>
-            {/* Đường dọc */}
-            <div style={{
-              position: "absolute", left: "50%", top: 0, bottom: 0,
-              width: 1, background: "linear-gradient(to bottom, transparent, #D4982A 10%, #D4982A 90%, transparent)",
-              transform: "translateX(-50%)",
-            }} className="hidden md:block" />
+      {/* Content */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "56px 24px" }}>
+        {SECTIONS.map((s, i) => (
+          <article key={s.id} id={s.id} style={{ marginBottom: 72 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
+              <div style={{ width: 5, height: 48, background: s.color, borderRadius: 3, flexShrink: 0 }} />
+              <h2 style={{
+                fontFamily: "'Be Vietnam Pro', sans-serif",
+                fontWeight: 800, fontSize: "clamp(1.2rem, 3vw, 1.6rem)",
+                color: s.color, lineHeight: 1.25,
+              }}>{s.title}</h2>
+            </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 64 }}>
-              {MILESTONES.map((m, i) => (
-                <div key={i} style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 0,
-                  alignItems: "center",
-                }} className="tl-row">
-                  {/* Nội dung trái/phải */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "start" }}
+              className="content-grid">
+              <div style={{
+                fontFamily: "'Be Vietnam Pro', sans-serif",
+                lineHeight: 1.85, color: "#333", fontSize: "0.97rem",
+                whiteSpace: "pre-line",
+              }}>{s.content}</div>
+
+              <div>
+                <div style={{ borderRadius: 12, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
+                  <img src={s.image} alt={s.caption}
+                    style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }}
+                  />
                   <div style={{
-                    order: i % 2 === 0 ? 1 : 2,
-                    padding: i % 2 === 0 ? "0 56px 0 0" : "0 0 0 56px",
-                    textAlign: i % 2 === 0 ? "right" : "left",
-                  }} className="tl-txt">
-                    <div style={{
-                      display: "inline-block",
-                      fontWeight: 900, fontSize: "0.72rem",
-                      color: m.accent, letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      borderBottom: `2px solid ${m.accent}`,
-                      paddingBottom: 4, marginBottom: 10,
-                    }}>{m.year}</div>
-                    <h3 style={{
-                      fontWeight: 800, fontSize: "1.3rem",
-                      color: "#1C1008", lineHeight: 1.25, marginBottom: 4,
-                    }}>{m.title}</h3>
-                    <p style={{
-                      fontWeight: 600, fontSize: "0.82rem",
-                      color: m.accent, marginBottom: 12,
-                      textTransform: "uppercase", letterSpacing: "0.05em",
-                    }}>{m.sub}</p>
-                    <p style={{ fontWeight: 400, fontSize: "0.93rem", color: "#5A4A30", lineHeight: 1.8 }}>
-                      {m.desc}
+                    padding: "10px 14px", background: "#f9f0d6",
+                    borderTop: `3px solid ${s.color}`,
+                  }}>
+                    <p style={{ fontFamily: "'Be Vietnam Pro', sans-serif", fontSize: "0.78rem", color: "#444", fontStyle: "italic" }}>
+                      {s.caption}
+                    </p>
+                    <p style={{ fontFamily: "'Be Vietnam Pro', sans-serif", fontSize: "0.7rem", color: "#888", marginTop: 4 }}>
+                      Nguồn: {s.source}
                     </p>
                   </div>
-
-                  {/* Điểm giữa */}
-                  <div style={{
-                    order: i % 2 === 0 ? 2 : 1,
-                    position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    paddingLeft: i % 2 === 0 ? 56 : undefined,
-                    paddingRight: i % 2 === 1 ? 56 : undefined,
-                  }} className="tl-right">
-                    {/* Chấm dòng thời gian */}
-                    <div style={{
-                      position: "absolute",
-                      [i % 2 === 0 ? "left" : "right"]: -1,
-                      width: 14, height: 14, borderRadius: "50%",
-                      background: m.accent,
-                      border: "3px solid #F8F1E0",
-                      boxShadow: `0 0 0 4px ${m.accent}40`,
-                      zIndex: 2,
-                    }} className="tl-dot" />
-
-                    {/* Card thông tin */}
-                    <div className="card-hover" style={{
-                      background: "white",
-                      borderRadius: 12,
-                      padding: "28px",
-                      borderLeft: `4px solid ${m.accent}`,
-                      boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-                      width: "100%",
-                    }}>
-                      {m.image && (
-                        <img
-                          src={m.image}
-                          alt={`${m.title} ${m.year}`}
-                          style={{
-                            width: "100%",
-                            height: "clamp(140px, 30vh, 320px)",
-                            objectFit: "cover",
-                            borderRadius: 8,
-                            marginBottom: 14,
-                            display: "block",
-                          }}
-                        />
-                      )}
-                      <div style={{
-                        fontWeight: 900, fontSize: "3rem",
-                        color: m.accent, opacity: 0.12,
-                        lineHeight: 1, marginBottom: -12,
-                      }}>{m.year}</div>
-                      <div style={{ fontWeight: 700, fontSize: "0.88rem", color: m.accent }}>
-                        {m.sub}
-                      </div>
-                      <Link href="/noi-dung" style={{
-                        display: "inline-block", marginTop: 14,
-                        fontWeight: 700, fontSize: "0.82rem",
-                        color: m.accent, textDecoration: "none",
-                        borderBottom: `1px solid ${m.accent}`,
-                        paddingBottom: 1,
-                      }}>Đọc thêm</Link>
-                    </div>
-                  </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* ═══════════════════════════════════════ KHÁM PHÁ ═══ */}
-      <section style={{ background: "#EDE0C4", padding: "80px 0" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
-          <div style={{ textAlign: "center", marginBottom: 52 }}>
-            <h2 style={{
-              fontWeight: 800, fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)",
-              color: "#1C1008",
-            }}>Khám Phá Thêm</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
-            {[
-              {
-                href: "/noi-dung",
-                title: "Nội Dung Học Thuật",
-                desc: "Giáo trình lịch sử Đảng giai đoạn Đổi Mới 1986–1991 theo chương trình chính thức.",
-                accent: "#B5261E",
-              },
-              {
-                href: "/tro-choi",
-                title: "Trò Chơi Lịch Sử",
-                desc: "Trắc nghiệm và điền vào chỗ trống — phương pháp học tương tác, ghi nhớ hiệu quả.",
-                accent: "#1B5E35",
-              },
-              {
-                href: "/hoi-dap",
-                title: "Hỏi Đáp Trí Tuệ Nhân Tạo",
-                desc: "Đặt câu hỏi về lịch sử Đảng giai đoạn này, nhận giải đáp chi tiết từ AI ngay lập tức.",
-                accent: "#132D52",
-              },
-            ].map((c, i) => (
-              <Link key={i} href={c.href} style={{ textDecoration: "none" }}>
-                <div className="card-hover" style={{
-                  background: "white", borderRadius: 12,
-                  padding: "40px 32px", height: "100%",
-                  borderTop: `3px solid ${c.accent}`,
-                }}>
-                  <div style={{
-                    fontWeight: 900, fontSize: "0.65rem",
-                    color: c.accent, letterSpacing: "0.2em",
-                    textTransform: "uppercase", marginBottom: 16,
-                  }}>Tính năng</div>
-                  <h3 style={{
-                    fontWeight: 800, fontSize: "1.15rem",
-                    color: "#1C1008", lineHeight: 1.3, marginBottom: 12,
-                  }}>{c.title}</h3>
-                  <p style={{ fontWeight: 400, fontSize: "0.9rem", color: "#7A6A54", lineHeight: 1.75 }}>
-                    {c.desc}
-                  </p>
-                  <div style={{
-                    marginTop: 24, fontWeight: 700, fontSize: "0.85rem",
-                    color: c.accent,
-                  }}>Vào ngay →</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+            {i < SECTIONS.length - 1 && (
+              <hr style={{ marginTop: 56, borderColor: "#e8d5a3", borderWidth: "1px 0 0" }} />
+            )}
+          </article>
+        ))}
 
-      {/* ═══════════════════════════════════════ FOOTER ═══ */}
-      <footer style={{ background: "#1C1008", padding: "56px 0 36px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px", textAlign: "center" }}>
-          <div style={{ fontWeight: 900, fontSize: "1.1rem", color: "#D4982A", marginBottom: 6, letterSpacing: "0.05em" }}>
-            LỊCH SỬ ĐẢNG CỘNG SẢN VIỆT NAM
-          </div>
-          <p style={{ fontWeight: 400, color: "#5A4A30", fontSize: "0.82rem", marginBottom: 28 }}>
-            Giai đoạn Đổi Mới 1986–1991 · Tài liệu học tập môn Lịch sử Đảng
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: 36, flexWrap: "wrap", marginBottom: 32 }}>
-            {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} style={{
-                fontWeight: 500, fontSize: "0.85rem",
-                color: "#7A6A54", textDecoration: "none",
-              }}>{l.label}</Link>
-            ))}
-          </div>
-          <div style={{ height: 1, background: "#2C1C08", marginBottom: 20 }} />
-          <p style={{ fontWeight: 400, fontSize: "0.72rem", color: "#3A2A18" }}>
-            Tài liệu học tập môn Lịch sử Đảng Cộng sản Việt Nam · Dành cho sinh viên đại học
+        {/* Kết luận */}
+        <div style={{
+          background: "linear-gradient(135deg, #7B1A12, #A93226)",
+          borderRadius: 16, padding: "40px 36px", textAlign: "center",
+        }}>
+          <h3 style={{
+            fontFamily: "'Be Vietnam Pro', sans-serif",
+            fontWeight: 800, fontSize: "1.5rem", color: "white", marginBottom: 14,
+          }}>Ý Nghĩa Lịch Sử</h3>
+          <p style={{
+            fontFamily: "'Be Vietnam Pro', sans-serif",
+            color: "rgba(255,255,255,0.88)", lineHeight: 1.8, fontSize: "0.97rem",
+            maxWidth: 600, margin: "0 auto",
+          }}>
+            Giai đoạn 1986–1991 là thời kỳ bản lề trong lịch sử Đảng và dân tộc. Đường lối Đổi Mới
+            không chỉ cứu đất nước thoát khỏi khủng hoảng, mà còn mở ra con đường phát triển đúng đắn —
+            kết hợp kinh tế thị trường với định hướng xã hội chủ nghĩa, hội nhập quốc tế giữ vững độc lập tự chủ.
           </p>
         </div>
-      </footer>
+      </div>
 
       <style>{`
         @media (max-width: 768px) {
-          .tl-row { grid-template-columns: 1fr !important; }
-          .tl-txt { order: 2 !important; padding: 0 !important; text-align: left !important; }
-          .tl-right { order: 1 !important; padding: 0 !important; }
-          .tl-dot { display: none; }
+          .content-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
