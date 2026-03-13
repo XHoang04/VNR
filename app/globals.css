@@ -142,29 +142,3 @@ body {
 }
 .typing-dot span:nth-child(2) { animation-delay: 0.2s; }
 .typing-dot span:nth-child(3) { animation-delay: 0.4s; }
-
-/* ── Navbar shimmer animation ── */
-@keyframes navShimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-/* ── Timeline background floating shapes ── */
-@keyframes floatShape {
-  0%, 100% { transform: translateY(0) rotate(0deg);   opacity: 0.04; }
-  33%       { transform: translateY(-18px) rotate(3deg); opacity: 0.07; }
-  66%       { transform: translateY(8px) rotate(-2deg);  opacity: 0.05; }
-}
-@keyframes floatShape2 {
-  0%, 100% { transform: translateY(0) rotate(0deg);    opacity: 0.03; }
-  50%       { transform: translateY(22px) rotate(-4deg); opacity: 0.065; }
-}
-
-/* ── Navbar border pulse ── */
-@keyframes borderPulse {
-  0%, 100% { opacity: 0.25; }
-  50%       { opacity: 0.55; }
-}
-.nav-border-anim {
-  animation: borderPulse 3s ease-in-out infinite;
-}
