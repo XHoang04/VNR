@@ -77,7 +77,7 @@ Tiếp tục đổi mới: Khẳng định tiếp tục đường lối đổi m
 Đại hội VII đánh dấu sự hoàn thiện bước đầu của đường lối Đổi Mới, tạo nền tảng vững chắc cho công cuộc xây dựng và phát triển đất nước trong giai đoạn tiếp theo.`,
     image: "/pictures/pic5.png",
     caption: "Hà Nội — biểu tượng của thể chế chính trị Việt Nam giai đoạn Đổi Mới",
-    source: "Đại hội Đảng lần thứ VII (06/1991)"
+    source: "Đại hội Đảng lần thứ VII (06/1991) - ảnh phục chế màu"
   }
 ];
 
