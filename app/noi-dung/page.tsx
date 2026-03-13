@@ -89,11 +89,12 @@ export default function NoiDungPage() {
       <Navbar />
 
       {/* Header */}
-      <div style={{
-        background: "linear-gradient(135deg, #7B1A12, #A93226, #C0392B)",
-        padding: "56px 0 48px",
-      }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+      <div style={{ position: "relative", overflow: "hidden", minHeight: 220, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(123,26,18,0.88), rgba(192,57,43,0.82))" }} />
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 800, width: "100%", padding: "56px 24px 48px", textAlign: "center" }}>
           <div style={{
             display: "inline-block",
             fontFamily: "'Be Vietnam Pro', sans-serif",

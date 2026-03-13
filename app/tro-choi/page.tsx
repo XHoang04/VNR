@@ -47,12 +47,16 @@ export default function TroChoiPage() {
     <div style={{ minHeight: "100vh", background: "#FDF6E3" }}>
       <Navbar />
 
-      <div style={{ background: "linear-gradient(135deg, #0F4A1F, #1E6B38)", padding: "56px 0 48px" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+      <div style={{ position: "relative", overflow: "hidden", minHeight: 220, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <video autoPlay muted loop playsInline style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}>
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(107,20,16,0.88), rgba(181,38,30,0.82))" }} />
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "56px 24px 48px" }}>
           <h1 style={{ ...S, fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.8rem)", color: "white", lineHeight: 1.2 }}>
             Trò Chơi Lịch Sử
           </h1>
-          <p style={{ ...S, color: "rgba(255,255,255,0.7)", fontSize: "1rem", marginTop: 10 }}>
+          <p style={{ ...S, color: "rgba(255,255,255,0.75)", fontSize: "1rem", marginTop: 10 }}>
             Học mà chơi, chơi mà học — kiểm tra kiến thức về Đổi Mới 1986–1991
           </p>
         </div>
@@ -63,7 +67,7 @@ export default function TroChoiPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             {[
               { id: "quiz", title: "Trắc Nghiệm", desc: `${QUIZ.length} câu hỏi về giai đoạn Đổi Mới`, color: "#A93226" },
-              { id: "fill", title: "Điền Vào Chỗ Trống", desc: `${FILL.length} câu hoàn thành kiến thức`, color: "#1E6B38" },
+              { id: "fill", title: "Điền Vào Chỗ Trống", desc: `${FILL.length} câu hoàn thành kiến thức`, color: "#B5261E" },
             ].map(g => (
               <button key={g.id} onClick={() => setGame(g.id as any)} style={{
                 background: "white", border: `2px solid ${g.color}20`,
@@ -107,7 +111,7 @@ export default function TroChoiPage() {
                 <div style={{
                   marginTop: 16, padding: "14px 16px", borderRadius: 10,
                   background: sel === QUIZ[qi].ans ? "#eafaf1" : "#fdf2f2",
-                  border: `1px solid ${sel === QUIZ[qi].ans ? "#1E6B38" : "#A93226"}30`,
+                  border: `1px solid ${sel === QUIZ[qi].ans ? "#B5261E" : "#A93226"}30`,
                 }}>
                   <p style={{ ...S, fontSize: "0.88rem", color: "#333", lineHeight: 1.6 }}>
                     {sel === QUIZ[qi].ans ? "Chính xác! " : "Chưa đúng. "}{QUIZ[qi].exp}
@@ -137,7 +141,7 @@ export default function TroChoiPage() {
               <button onClick={reset} style={{ ...S, padding: "10px 24px", borderRadius: 20, background: "#A93226", color: "white", border: "none", fontWeight: 700, cursor: "pointer" }}>
                 Chơi lại
               </button>
-              <button onClick={() => setGame(null)} style={{ ...S, padding: "10px 24px", borderRadius: 20, background: "#1E6B38", color: "white", border: "none", fontWeight: 700, cursor: "pointer" }}>
+              <button onClick={() => setGame(null)} style={{ ...S, padding: "10px 24px", borderRadius: 20, background: "#B5261E", color: "white", border: "none", fontWeight: 700, cursor: "pointer" }}>
                 Trò chơi khác
               </button>
             </div>
@@ -147,7 +151,7 @@ export default function TroChoiPage() {
         {/* FILL */}
         {game === "fill" && (
           <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
-            <div style={{ background: "linear-gradient(135deg, #0F4A1F, #1E6B38)", padding: "20px 24px" }}>
+            <div style={{ background: "linear-gradient(135deg, #6B1410, #B5261E)", padding: "20px 24px" }}>
               <h3 style={{ ...S, fontWeight: 700, fontSize: "1.15rem", color: "white" }}>Điền Vào Chỗ Trống</h3>
               <p style={{ ...S, color: "rgba(255,255,255,0.65)", fontSize: "0.82rem", marginTop: 4 }}>Điền từ hoặc cụm từ thích hợp vào chỗ trống</p>
             </div>
@@ -160,7 +164,7 @@ export default function TroChoiPage() {
                     <div key={i} style={{
                       padding: "16px", borderRadius: 10,
                       background: checked ? (ok ? "#eafaf1" : "#fdf2f2") : "#f9f0d6",
-                      border: `1.5px solid ${checked ? (ok ? "#1E6B38" : "#A93226") : "#e8d5a3"}30`,
+                      border: `1.5px solid ${checked ? (ok ? "#B5261E" : "#A93226") : "#e8d5a3"}30`,
                     }}>
                       <p style={{ ...S, color: "#333", lineHeight: 1.7, fontSize: "0.97rem" }}>
                         <strong>{i+1}.</strong> {f.s}
@@ -171,12 +175,12 @@ export default function TroChoiPage() {
                         placeholder="Nhập câu trả lời..."
                         style={{
                           ...S, marginTop: 10, width: "100%",
-                          border: `2px solid ${checked ? (ok ? "#1E6B38" : "#A93226") : "#e8d5a3"}`,
+                          border: `2px solid ${checked ? (ok ? "#B5261E" : "#A93226") : "#e8d5a3"}`,
                           borderRadius: 8, padding: "8px 12px",
                           fontSize: "0.92rem", background: "white", outline: "none",
                         }}
                       />
-                      {checked && <p style={{ ...S, fontSize: "0.8rem", marginTop: 6, color: ok ? "#1E6B38" : "#A93226", fontWeight: 600 }}>
+                      {checked && <p style={{ ...S, fontSize: "0.8rem", marginTop: 6, color: ok ? "#B5261E" : "#A93226", fontWeight: 600 }}>
                         {ok ? "Chính xác!" : `Đáp án đúng: ${f.ans}`}
                       </p>}
                     </div>
@@ -184,7 +188,7 @@ export default function TroChoiPage() {
                 })}
               </div>
               <div style={{ display: "flex", gap: 12, marginTop: 24, alignItems: "center" }}>
-                <button onClick={() => setChecked(true)} style={{ ...S, padding: "10px 24px", borderRadius: 20, background: "#1E6B38", color: "white", border: "none", fontWeight: 700, cursor: "pointer" }}>
+                <button onClick={() => setChecked(true)} style={{ ...S, padding: "10px 24px", borderRadius: 20, background: "#B5261E", color: "white", border: "none", fontWeight: 700, cursor: "pointer" }}>
                   Kiểm tra
                 </button>
                 {checked && <span style={{ ...S, color: "#444", fontSize: "0.9rem" }}>Kết quả: {fillOk}/{FILL.length}</span>}
