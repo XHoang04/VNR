@@ -104,6 +104,22 @@ Tiếp tục đổi mới: Khẳng định tiếp tục đường lối đổi m
 
 export default function NoiDungPage() {
   const [chat, setChat] = useState(false);
+    const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
+
+  useEffect(() => {
+    if (!lightboxImage) {
+      return;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setLightboxImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [lightboxImage]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#FDF6E3" }}>
@@ -189,9 +205,22 @@ export default function NoiDungPage() {
 
               <div>
                 <div style={{ borderRadius: 12, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
-                  <img src={s.image} alt={s.caption}
-                    style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }}
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setLightboxImage({ src: s.image, alt: s.caption })}
+                    style={{
+                      width: "100%",
+                      padding: 0,
+                      border: "none",
+                      background: "transparent",
+                      cursor: "zoom-in",
+                    }}
+                    aria-label={`Xem ảnh đầy đủ: ${s.caption}`}
+                  >
+                    <img src={s.image} alt={s.caption}
+                      style={{ width: "100%", height: 200, objectFit: "cover", display: "block" }}
+                    />
+                  </button>
                   <div style={{
                     padding: "10px 14px", background: "#f9f0d6",
                     borderTop: `3px solid ${s.color}`,
@@ -239,6 +268,60 @@ export default function NoiDungPage() {
           .content-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
+
+      {lightboxImage && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Xem ảnh toàn màn hình"
+          onClick={() => setLightboxImage(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 120,
+            background: "rgba(0, 0, 0, 0.82)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setLightboxImage(null)}
+            aria-label="Đóng ảnh"
+            style={{
+              position: "absolute",
+              top: 18,
+              right: 18,
+              width: 38,
+              height: 38,
+              borderRadius: 999,
+              border: "1px solid rgba(255,255,255,0.35)",
+              background: "rgba(0,0,0,0.35)",
+              color: "#fff",
+              fontSize: "1.1rem",
+              cursor: "pointer",
+            }}
+          >
+            x
+          </button>
+          <img
+            src={lightboxImage.src}
+            alt={lightboxImage.alt}
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              width: "auto",
+              maxWidth: "min(1200px, 92vw)",
+              height: "auto",
+              maxHeight: "88vh",
+              borderRadius: 12,
+              boxShadow: "0 18px 60px rgba(0,0,0,0.55)",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      )}
 
       <ChatBox open={chat} onToggle={() => setChat(!chat)} />
     </div>
