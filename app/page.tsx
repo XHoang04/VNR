@@ -152,6 +152,76 @@ const NAV_LINKS = [
 
 export default function Home() {
   const [chat, setChat] = useState(false);
+  const timelineVantaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let isCancelled = false;
+    let vantaEffect: any;
+
+    const loadScript = (src: string) =>
+      new Promise<void>((resolve, reject) => {
+        const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null;
+        if (existing) {
+          if (existing.getAttribute("data-loaded") === "true") {
+            resolve();
+            return;
+          }
+          existing.addEventListener("load", () => resolve(), { once: true });
+          existing.addEventListener("error", () => reject(new Error(`Failed to load script: ${src}`)), { once: true });
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = () => {
+          script.setAttribute("data-loaded", "true");
+          resolve();
+        };
+        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+        document.head.appendChild(script);
+      });
+
+    const initVanta = async () => {
+      try {
+        if (!(window as any).THREE) {
+          await loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js");
+        }
+        if (!(window as any).VANTA?.BIRDS) {
+          await loadScript("https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js");
+        }
+
+        if (isCancelled || !timelineVantaRef.current || !(window as any).VANTA?.BIRDS) {
+          return;
+        }
+
+        vantaEffect = (window as any).VANTA.BIRDS({
+          el: timelineVantaRef.current,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200,
+          minWidth: 200,
+          scale: 1,
+          scaleMobile: 1,
+          backgroundColor: 0xf1f2ca,
+          color1: 0xf90e0e,
+          color2: 0xfff600,
+        });
+      } catch {
+        // Keep the section readable even when external scripts are blocked.
+      }
+    };
+
+    initVanta();
+
+    return () => {
+      isCancelled = true;
+      if (vantaEffect && typeof vantaEffect.destroy === "function") {
+        vantaEffect.destroy();
+      }
+    };
+  }, []);
 
   return (
     <div style={{ fontFamily: "'Be Vietnam Pro', sans-serif", background: "#F8F1E0" }}>
@@ -327,8 +397,10 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════ DÒNG THỜI GIAN ═══ */}
-      <section style={{ padding: "96px 0", background: "#F8F1E0" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
+      <section style={{ padding: "96px 0", background: "#F8F1E0", position: "relative", overflow: "hidden" }}>
+        <div ref={timelineVantaRef} style={{ position: "absolute", inset: 0, zIndex: 0 }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "rgba(248, 241, 224, 0.88)" }} />
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px", position: "relative", zIndex: 2 }}>
 
           {/* Tiêu đề */}
           <div style={{ textAlign: "center", marginBottom: 72 }}>
