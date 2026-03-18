@@ -33,7 +33,7 @@ export default function Navbar() {
     const spawnBird = () => {
       const leftToRight = Math.random() > 0.5;
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-      const durationMs = 4200 + Math.random() * 3800;
+      const durationMs = 9000 + Math.random() * 7000; // ← tăng từ 4200–8000 lên 9000–16000
 
       const bird: BirdFlight = {
         id,
@@ -60,12 +60,9 @@ export default function Navbar() {
     };
 
     const scheduleNext = () => {
-      if (disposed) {
-        return;
-      }
+      if (disposed) return;
 
-      // Random gaps make the flight pattern feel natural instead of constant.
-      const waitMs = 1800 + Math.random() * 5200;
+      const waitMs = 4000 + Math.random() * 8000; // ← tăng từ 1800–7000 lên 4000–12000
       const nextTimer = window.setTimeout(() => {
         spawnBird();
         scheduleNext();
@@ -139,7 +136,6 @@ export default function Navbar() {
               </div>
             </div>
           </Link>
-          
 
           {/* Desktop links */}
           <div className="nav-desktop" style={{ gap: 40, alignItems: "center" }}>
