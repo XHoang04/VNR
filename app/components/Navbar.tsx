@@ -33,7 +33,7 @@ export default function Navbar() {
     const spawnBird = () => {
       const leftToRight = Math.random() > 0.5;
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-      const durationMs = 9000 + Math.random() * 7000; // ← tăng từ 4200–8000 lên 9000–16000
+      const durationMs = 4200 + Math.random() * 3800;
 
       const bird: BirdFlight = {
         id,
@@ -60,9 +60,12 @@ export default function Navbar() {
     };
 
     const scheduleNext = () => {
-      if (disposed) return;
+      if (disposed) {
+        return;
+      }
 
-      const waitMs = 4000 + Math.random() * 8000; // ← tăng từ 1800–7000 lên 4000–12000
+      // Random gaps make the flight pattern feel natural instead of constant.
+      const waitMs = 1800 + Math.random() * 5200;
       const nextTimer = window.setTimeout(() => {
         spawnBird();
         scheduleNext();
@@ -117,10 +120,10 @@ export default function Navbar() {
         <div style={{
           maxWidth: 1200, margin: "0 auto", padding: "0 32px",
           height: 68,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          display: "grid", alignItems: "center", gridTemplateColumns: "1fr auto 1fr",
         }}>
           {/* Logo */}
-          <Link href="/" className="nav-logo-link" style={{ textDecoration: "none", flexShrink: 0 }}>
+          <Link href="/" className="nav-logo-link" style={{ textDecoration: "none", flexShrink: 0, justifySelf: "start" }}>
             <img
               src="/hammer_sickle_transparent_spin.gif"
               alt=""
@@ -136,9 +139,10 @@ export default function Navbar() {
               </div>
             </div>
           </Link>
+          
 
           {/* Desktop links */}
-          <div className="nav-desktop" style={{ gap: 40, alignItems: "center" }}>
+          <div className="nav-desktop" style={{ gap: 40, alignItems: "center", justifySelf: "center" }}>
             {LINKS.map(l => (
               <Link key={l.href} href={l.href} className={`nav-lnk${path === l.href ? " on" : ""}`}>
                 {l.label}
@@ -147,7 +151,9 @@ export default function Navbar() {
           </div>
 
           {/* Counter */}
-          <VisitorCounter />
+          <div style={{ justifySelf: "end" }}>
+            <VisitorCounter />
+          </div>
         </div>
 
         {/* Mobile row */}
