@@ -1,13 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import ChatBox from "../components/ChatBox";
 
 function HeaderBackground() {
   const [videoFailed, setVideoFailed] = useState(false);
-  useEffect(() => {
-    
-  }, []);
 
   if (!videoFailed) {
     return (
@@ -19,8 +16,7 @@ function HeaderBackground() {
       </video>
     );
   }
-
-  return <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(135deg, #0F4A1F, #1E6B38)" }} />;
+  return <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(135deg, #6B1410, #B5261E)" }} />;
 }
 
 const QUIZ = [
@@ -30,6 +26,20 @@ const QUIZ = [
   { q: "Luật Đầu tư nước ngoài đầu tiên của Việt Nam được ban hành năm nào?", opts: ["1986","1987","1988","1990"], ans: 1, exp: "Năm 1987, Quốc hội ban hành Luật Đầu tư nước ngoài đầu tiên, mở cửa thu hút vốn FDI." },
   { q: "Đại hội VII thông qua văn kiện quan trọng nào?", opts: ["Hiến pháp 1992","Cương lĩnh xây dựng đất nước 1991","Luật Doanh nghiệp","Nghị quyết Trung ương 6"], ans: 1, exp: "Đại hội VII (6/1991) thông qua Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội." },
   { q: "Tinh thần nổi bật của Đại hội VI về nhìn nhận thực tế là gì?", opts: ["Tiến nhanh, tiến mạnh lên chủ nghĩa xã hội","Nhìn thẳng vào sự thật, đánh giá đúng sự thật, nói rõ sự thật","Công nghiệp hóa, hiện đại hóa đất nước","Dân giàu, nước mạnh, xã hội công bằng"], ans: 1, exp: "Đại hội VI đề ra tinh thần nhìn thẳng vào sự thật, đánh giá đúng thực trạng đất nước — biểu hiện của dân chủ và đổi mới tư duy." },
+  { q: "Trước Đổi Mới, lạm phát của Việt Nam ở mức nào?", opts: ["Dưới 50%/năm","Khoảng 100%/năm","Hàng trăm phần trăm/năm","Dưới 20%/năm"], ans: 2, exp: "Trước 1986, lạm phát phi mã lên tới hàng trăm phần trăm mỗi năm, đời sống nhân dân hết sức khó khăn." },
+  { q: "Ba chương trình kinh tế lớn của Đại hội VI là gì?", opts: ["Công nghiệp – Nông nghiệp – Dịch vụ","Lương thực-thực phẩm – Hàng tiêu dùng – Hàng xuất khẩu","Điện – Than – Thép","Giao thông – Thuỷ lợi – Giáo dục"], ans: 1, exp: "Nghị quyết Đại hội VI xác định 3 chương trình kinh tế lớn: lương thực – thực phẩm, hàng tiêu dùng và hàng xuất khẩu." },
+  { q: "Việt Nam xuất khẩu gạo xếp thứ mấy thế giới vào năm 1989?", opts: ["Thứ nhất","Thứ hai","Thứ ba","Thứ tư"], ans: 2, exp: "Nhờ Khoán 10, năm 1989 Việt Nam từ nước thiếu lương thực trở thành nước xuất khẩu gạo đứng thứ ba thế giới." },
+  { q: "Liên Xô bắt đầu chính sách cải cách Glasnost và Perestroika từ năm nào?", opts: ["1983","1984","1985","1986"], ans: 2, exp: "Liên Xô bắt đầu chính sách Glasnost và Perestroika từ năm 1985 dưới thời Tổng Bí thư Gorbachev." },
+  { q: "Nghị quyết 306/HĐBT năm 1989 có ý nghĩa gì?", opts: ["Ban hành Luật Doanh nghiệp","Xóa bỏ cơ chế hai giá, thống nhất giá thị trường","Gia nhập ASEAN","Rút quân khỏi Campuchia"], ans: 1, exp: "Nghị quyết 306/HĐBT xóa bỏ cơ chế hai giá, thống nhất hệ thống giá cả theo thị trường — bước đột phá trong cải cách kinh tế." },
+  { q: "Đại hội VII diễn ra vào tháng nào năm 1991?", opts: ["Tháng 3","Tháng 4","Tháng 6","Tháng 12"], ans: 2, exp: "Đại hội đại biểu toàn quốc lần thứ VII diễn ra tháng 6/1991 tại Hà Nội." },
+  { q: "Việt Nam chính thức gia nhập ASEAN vào năm nào?", opts: ["1991","1993","1995","1997"], ans: 2, exp: "Việt Nam chính thức gia nhập ASEAN năm 1995, sau quá trình bình thường hóa quan hệ bắt đầu từ Đổi Mới 1986." },
+  { q: "Trung Quốc bắt đầu cải cách kinh tế từ năm nào, ảnh hưởng đến Đổi Mới Việt Nam?", opts: ["1975","1978","1980","1982"], ans: 1, exp: "Trung Quốc tiến hành cải cách kinh tế từ năm 1978 và gặt hái kết quả đáng kể, là một trong các yếu tố tham chiếu cho Đổi Mới Việt Nam." },
+  { q: "Chiến lược phát triển kinh tế–xã hội đến năm 2000 được thông qua tại Đại hội nào?", opts: ["Đại hội V","Đại hội VI","Đại hội VII","Đại hội VIII"], ans: 2, exp: "Đại hội VII (1991) thông qua Chiến lược phát triển kinh tế–xã hội đến năm 2000, đặt mục tiêu thoát khỏi nghèo nàn và lạc hậu." },
+  { q: "Cơ chế kinh tế nào được thay thế bởi Khoán 10?", opts: ["Kinh tế tư nhân","Mô hình hợp tác xã bao cấp","Kinh tế hỗn hợp","Doanh nghiệp nhà nước"], ans: 1, exp: "Khoán 10 thay thế mô hình hợp tác xã bao cấp, giao quyền sử dụng đất lâu dài trực tiếp cho hộ nông dân." },
+  { q: "Bức tường Berlin sụp đổ vào tháng mấy năm nào?", opts: ["Tháng 9/1989","Tháng 10/1989","Tháng 11/1989","Tháng 12/1989"], ans: 2, exp: "Bức tường Berlin sụp đổ tháng 11/1989, là biểu tượng sụp đổ của hệ thống xã hội chủ nghĩa Đông Âu, tác động lớn đến tư duy của Đảng Cộng sản Việt Nam." },
+  { q: "Đường lối đối ngoại mới của Việt Nam sau Đổi Mới là gì?", opts: ["Chỉ hợp tác với các nước xã hội chủ nghĩa","Việt Nam muốn làm bạn với tất cả các nước","Ưu tiên quan hệ với Liên Xô","Không liên kết với phương Tây"], ans: 1, exp: "Đường lối 'Việt Nam muốn làm bạn với tất cả các nước' được chính thức hóa tại Đại hội VII (1991), đánh dấu chính sách đối ngoại đa phương hóa." },
+  { q: "Việt Nam có bao nhiêu quân tình nguyện ở Campuchia trước khi rút về?", opts: ["Khoảng 20.000","Khoảng 30.000","Khoảng 50.000","Khoảng 80.000"], ans: 2, exp: "Việt Nam hoàn thành rút toàn bộ 50.000 quân tình nguyện khỏi Campuchia vào tháng 9/1989." },
+  { q: "Nền kinh tế Việt Nam trước Đổi Mới vận hành theo mô hình nào?", opts: ["Kinh tế thị trường tự do","Kinh tế hỗn hợp","Kế hoạch hóa tập trung, bao cấp","Kinh tế tư nhân"], ans: 2, exp: "Trước 1986, Việt Nam vận hành theo mô hình kinh tế kế hoạch hóa tập trung, bao cấp — dẫn đến khủng hoảng kinh tế nghiêm trọng." },
 ];
 
 const FILL = [
@@ -37,6 +47,10 @@ const FILL = [
   { s: "Nghị quyết ____ của Bộ Chính trị năm 1988 giao đất cho nông dân.", ans: "10", hint: "Còn gọi là Khoán mười" },
   { s: "Việt Nam xuất khẩu ____ thành công vào năm 1989 nhờ Khoán 10.", ans: "gạo", hint: "Lương thực chủ yếu" },
   { s: "Đại hội ____ của Đảng năm 1991 thông qua Cương lĩnh xây dựng đất nước.", ans: "VII", hint: "Số La Mã của số 7" },
+  { s: "Việt Nam rút ____ quân tình nguyện khỏi Campuchia năm 1989.", ans: "50.000", hint: "Năm mươi nghìn" },
+  { s: "Bức tường ____ sụp đổ tháng 11/1989 ảnh hưởng đến tư duy Đổi Mới.", ans: "Berlin", hint: "Thủ đô nước Đức" },
+  { s: "Luật Đầu tư ____ đầu tiên được ban hành năm 1987.", ans: "nước ngoài", hint: "FDI" },
+  { s: "Tinh thần Đại hội VI: Nhìn thẳng vào ____, đánh giá đúng sự thật.", ans: "sự thật", hint: "Không né tránh thực tế" },
 ];
 
 export default function TroChoiPage() {
@@ -69,9 +83,7 @@ export default function TroChoiPage() {
 
       <div style={{ position: "relative", padding: "56px 0 48px", overflow: "hidden" }}>
         <HeaderBackground />
-
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(15,74,31,0.85), rgba(30,107,56,0.75))" }} />
-
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(135deg, rgba(107,20,16,0.88), rgba(181,38,30,0.82))" }} />
         <div style={{ position: "relative", zIndex: 2, maxWidth: 700, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <h1 style={{ ...S, fontWeight: 900, fontSize: "clamp(1.8rem,5vw,2.8rem)", color: "white", lineHeight: 1.2 }}>
             Trò Chơi Lịch Sử
@@ -87,13 +99,12 @@ export default function TroChoiPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
             {[
               { id: "quiz", title: "Trắc Nghiệm", desc: `${QUIZ.length} câu hỏi về giai đoạn Đổi Mới`, color: "#A93226" },
-              { id: "fill", title: "Điền Vào Chỗ Trống", desc: `${FILL.length} câu hoàn thành kiến thức`, color: "#1E6B38" },
+              { id: "fill", title: "Điền Vào Chỗ Trống", desc: `${FILL.length} câu hoàn thành kiến thức`, color: "#A93226" },
             ].map(g => (
               <button key={g.id} onClick={() => setGame(g.id as any)} style={{
                 background: "white", border: `2px solid ${g.color}20`,
                 borderRadius: 16, padding: "44px 28px", minHeight: 260, cursor: "pointer",
-                textAlign: "center",
-                transition: "transform 0.2s, box-shadow 0.2s",
+                textAlign: "center", transition: "transform 0.2s, box-shadow 0.2s",
               }}>
                 <div style={{ width: 40, height: 4, background: g.color, borderRadius: 2, margin: "0 auto 16px" }} />
                 <h3 style={{ ...S, fontWeight: 800, fontSize: "1.4rem", color: g.color, marginBottom: 10 }}>{g.title}</h3>
@@ -131,7 +142,7 @@ export default function TroChoiPage() {
                 <div style={{
                   marginTop: 20, padding: "18px 20px", borderRadius: 12,
                   background: sel === QUIZ[qi].ans ? "#eafaf1" : "#fdf2f2",
-                  border: `1px solid ${sel === QUIZ[qi].ans ? "#1E6B38" : "#A93226"}30`,
+                  border: `1px solid ${sel === QUIZ[qi].ans ? "#A93226" : "#A93226"}30`,
                 }}>
                   <p style={{ ...S, fontSize: "1rem", color: "#333", lineHeight: 1.65 }}>
                     {sel === QUIZ[qi].ans ? "Chính xác! " : "Chưa đúng. "}{QUIZ[qi].exp}
@@ -155,13 +166,13 @@ export default function TroChoiPage() {
               {score}/{QUIZ.length}
             </div>
             <p style={{ ...S, color: "#555", fontSize: "1.12rem", marginBottom: 28 }}>
-              {score >= 5 ? "Xuất sắc! Bạn nắm vững lịch sử Đổi Mới." : score >= 3 ? "Tốt! Hãy ôn thêm để nhớ lâu hơn." : "Hãy đọc thêm nội dung và thử lại."}
+              {score >= 16 ? "Xuất sắc! Bạn nắm vững lịch sử Đổi Mới." : score >= 10 ? "Tốt! Hãy ôn thêm để nhớ lâu hơn." : "Hãy đọc thêm nội dung và thử lại."}
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
               <button onClick={reset} style={{ ...S, padding: "12px 26px", borderRadius: 22, background: "#A93226", color: "white", border: "none", fontWeight: 700, cursor: "pointer", fontSize: "0.98rem" }}>
                 Chơi lại
               </button>
-              <button onClick={() => setGame(null)} style={{ ...S, padding: "12px 26px", borderRadius: 22, background: "#1E6B38", color: "white", border: "none", fontWeight: 700, cursor: "pointer", fontSize: "0.98rem" }}>
+              <button onClick={() => setGame(null)} style={{ ...S, padding: "12px 26px", borderRadius: 22, background: "#B5261E", color: "white", border: "none", fontWeight: 700, cursor: "pointer", fontSize: "0.98rem" }}>
                 Trò chơi khác
               </button>
             </div>
@@ -171,7 +182,7 @@ export default function TroChoiPage() {
         {/* FILL */}
         {game === "fill" && (
           <div style={{ background: "white", borderRadius: 18, overflow: "hidden", boxShadow: "0 10px 38px rgba(0,0,0,0.12)" }}>
-            <div style={{ background: "linear-gradient(135deg, #0F4A1F, #1E6B38)", padding: "28px 34px" }}>
+            <div style={{ background: "linear-gradient(135deg, #6B1410, #B5261E)", padding: "28px 34px" }}>
               <h3 style={{ ...S, fontWeight: 700, fontSize: "1.4rem", color: "white" }}>Điền Vào Chỗ Trống</h3>
               <p style={{ ...S, color: "rgba(255,255,255,0.72)", fontSize: "0.98rem", marginTop: 6 }}>Điền từ hoặc cụm từ thích hợp vào chỗ trống</p>
             </div>
@@ -183,11 +194,11 @@ export default function TroChoiPage() {
                     <div key={i} style={{
                       padding: "24px", borderRadius: 14,
                       background: checked
-                        ? (ok ? "linear-gradient(135deg, #e9fff1 0%, #d8f8e4 100%)" : "linear-gradient(135deg, #fff1f0 0%, #ffe2dd 100%)")
-                        : "linear-gradient(135deg, #fff8e5 0%, #f7e8be 100%)",
-                      border: `2px solid ${checked ? (ok ? "#1E6B38" : "#A93226") : "#e2b85f"}`,
+                        ? (ok ? "linear-gradient(135deg, #fff8ee, #fdf0e0)" : "linear-gradient(135deg, #fff1f0, #ffe2dd)")
+                        : "linear-gradient(135deg, #fff8e5, #f7e8be)",
+                      border: `2px solid ${checked ? (ok ? "#B5261E" : "#A93226") : "#e2b85f"}`,
                       boxShadow: checked
-                        ? (ok ? "0 8px 20px rgba(30,107,56,0.16)" : "0 8px 20px rgba(169,50,38,0.14)")
+                        ? (ok ? "0 8px 20px rgba(181,38,30,0.12)" : "0 8px 20px rgba(169,50,38,0.14)")
                         : "0 8px 20px rgba(226,184,95,0.2)",
                     }}>
                       <p style={{ ...S, color: "#333", lineHeight: 1.75, fontSize: "1.08rem" }}>
@@ -199,14 +210,13 @@ export default function TroChoiPage() {
                         placeholder="Nhập câu trả lời..."
                         style={{
                           ...S, marginTop: 12, width: "100%",
-                          border: `2px solid ${checked ? (ok ? "#1E6B38" : "#A93226") : "#e8d5a3"}`,
+                          border: `2px solid ${checked ? (ok ? "#B5261E" : "#A93226") : "#e8d5a3"}`,
                           borderRadius: 12, padding: "14px 16px",
                           fontSize: "1.1rem", fontWeight: 600,
-                          background: "white", outline: "none",
-                          color: "#4b180f",
+                          background: "white", outline: "none", color: "#4b180f",
                         }}
                       />
-                      {checked && <p style={{ ...S, fontSize: "1rem", marginTop: 10, color: ok ? "#1E6B38" : "#A93226", fontWeight: 700 }}>
+                      {checked && <p style={{ ...S, fontSize: "1rem", marginTop: 10, color: ok ? "#B5261E" : "#A93226", fontWeight: 700 }}>
                         {ok ? "Chính xác!" : `Đáp án đúng: ${f.ans}`}
                       </p>}
                     </div>
@@ -214,7 +224,7 @@ export default function TroChoiPage() {
                 })}
               </div>
               <div style={{ display: "flex", gap: 14, marginTop: 28, alignItems: "center" }}>
-                <button onClick={() => setChecked(true)} style={{ ...S, padding: "12px 26px", borderRadius: 22, background: "#1E6B38", color: "white", border: "none", fontWeight: 700, cursor: "pointer", fontSize: "0.98rem" }}>
+                <button onClick={() => setChecked(true)} style={{ ...S, padding: "12px 26px", borderRadius: 22, background: "#B5261E", color: "white", border: "none", fontWeight: 700, cursor: "pointer", fontSize: "0.98rem" }}>
                   Kiểm tra
                 </button>
                 {checked && <span style={{ ...S, color: "#444", fontSize: "1rem" }}>Kết quả: {fillOk}/{FILL.length}</span>}
@@ -226,16 +236,16 @@ export default function TroChoiPage() {
           </div>
         )}
 
-        {game && <div style={{ textAlign: "center", marginTop: 16 }}>
-          <button onClick={() => setGame(null)} style={{ ...S, color: "#A93226", background: "none", border: "none", cursor: "pointer", fontSize: "0.88rem" }}>
-            Xem tất cả trò chơi
-          </button>
-        </div>}
+        {game && (
+          <div style={{ textAlign: "center", marginTop: 16 }}>
+            <button onClick={() => setGame(null)} style={{ ...S, color: "#A93226", background: "none", border: "none", cursor: "pointer", fontSize: "0.88rem" }}>
+              Xem tất cả trò chơi
+            </button>
+          </div>
+        )}
       </div>
 
       <ChatBox open={chat} onToggle={() => setChat(!chat)} />
     </div>
-  );
-}
   );
 }
