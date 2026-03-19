@@ -33,7 +33,7 @@ export default function Navbar() {
     const spawnBird = () => {
       const leftToRight = Math.random() > 0.5;
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-      const durationMs = 4200 + Math.random() * 3800;
+      const durationMs = 18000 + Math.random() * 12000;  
 
       const bird: BirdFlight = {
         id,
@@ -65,7 +65,7 @@ export default function Navbar() {
       }
 
       // Random gaps make the flight pattern feel natural instead of constant.
-      const waitMs = 1800 + Math.random() * 5200;
+      const waitMs = 8000 + Math.random() * 12000;  
       const nextTimer = window.setTimeout(() => {
         spawnBird();
         scheduleNext();
