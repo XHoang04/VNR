@@ -359,12 +359,13 @@ export default function Home() {
         <div style={{
           position: "absolute", bottom: 32, left: "50%",
           transform: "translateX(-50%)", zIndex: 2, textAlign: "center",
-          animation: "bounce-down 2.2s ease-in-out infinite",
         }}>
-          <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", marginBottom: 6 }}>
-            CUỘN XUỐNG
-          </p>
-          <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}>↓</div>
+          <div style={{ animation: "bounce-down 2.2s ease-in-out infinite" }}>
+            <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", marginBottom: 6 }}>
+              CUỘN XUỐNG
+            </p>
+            <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.2rem" }}>↓</div>
+          </div>
         </div>
       </section>
 
