@@ -18,7 +18,7 @@ function ChatIcon() {
 export default function ChatBox({ open, onToggle }: { open: boolean; onToggle: () => void }) {
   const [msgs, setMsgs] = useState<Msg[]>([{
     role: "assistant",
-    content: "Xin chào! Tôi là trợ lý AI về Lịch sử Đảng giai đoạn 1986–1991. Bạn có thể hỏi tôi về Đổi Mới, Khoán 10, các Đại hội Đảng và nhiều chủ đề khác.",
+    content: "Xin chào! Tôi là trợ lý AI về Lịch sử Đảng.",
   }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
