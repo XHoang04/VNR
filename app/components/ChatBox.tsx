@@ -97,7 +97,7 @@ export default function ChatBox({ open, onToggle }: { open: boolean; onToggle: (
             </div>
             <div>
               <div style={{ ...F, fontWeight: 700, fontSize: "0.92rem", color: "white" }}>Trợ Lý Lịch Sử</div>
-              <div style={{ ...F, fontSize: "0.7rem", color: "rgba(255,255,255,0.55)" }}>Đảng CSVN · 1986–1991</div>
+
             </div>
             {/* Chấm online */}
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 5 }}>
